@@ -1,5 +1,7 @@
 #thought for NN
 
+from NeuralNetwork import NeuralNetwork
+
 class GeneticAlgorithm:
     
     #Everything about init
@@ -32,11 +34,12 @@ class GeneticAlgorithm:
 
     
     def __init__(self):
-        self.sizePop             =   100
-        self.nbrReproductions    =    10
-        self.nbrMutations        =    10
+        self.sizePop            =   100
+        self.nbrReproductions   =    10
+        self.nbrMutations       =    10
+        self.pop                =   [NeuralNetwork()] * self.sizePop
     
         #set GA parameters
         
-
-
+GA = GeneticAlgorithm()
+print "test"
