@@ -18,7 +18,7 @@ class GeneticAlgorithm:
     def chooseCoupleParents(self):
         print "tbd"
 
-    def mutatePop(self):
+    def mutateChild(self):
         print "tbd"
 
     @staticmethod
@@ -34,12 +34,18 @@ class GeneticAlgorithm:
 
     
     def __init__(self):
-        self.sizePop            =   100
+        self.sizePop            =   1
         self.nbrReproductions   =    10
         self.nbrMutations       =    10
-        self.pop                =   [NeuralNetwork()] * self.sizePop
+        self.pop                =   []
+        for x in xrange(0, self.sizePop):
+            self.pop.append(NeuralNetwork())
     
         #set GA parameters
         
 GA = GeneticAlgorithm()
-print "test"
+GA.pop[0].setInputs([1,1,1])
+GA.pop[0].calculateOutputs()
+GA.pop[0].printNN()
+GA.pop[0].mutate(1)
+GA.pop[0].printNN()
