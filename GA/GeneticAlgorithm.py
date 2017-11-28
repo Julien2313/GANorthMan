@@ -6,7 +6,8 @@ class GeneticAlgorithm:
     
     #Everything about init
     def initializePop(self):
-        print "tbd"
+        for x in xrange(0, self.sizePop):
+            self.pop.append(NeuralNetwork())
 
 
     #Everything about init
@@ -34,18 +35,19 @@ class GeneticAlgorithm:
 
     
     def __init__(self):
-        self.sizePop            =   1
-        self.nbrReproductions   =    10
-        self.nbrMutations       =    10
+        self.sizePop            =    1
+        self.nbrReproductions   =   10
+        self.nbrMutations       =   10
         self.pop                =   []
-        for x in xrange(0, self.sizePop):
-            self.pop.append(NeuralNetwork())
     
         #set GA parameters
         
 GA = GeneticAlgorithm()
+
+GA.initializePop()
 GA.pop[0].setInputs([1,1,1])
 GA.pop[0].calculateOutputs()
 GA.pop[0].printNN()
 GA.pop[0].mutate(1)
 GA.pop[0].printNN()
+GA.pop[0].generatePicture()

@@ -1,17 +1,48 @@
 from random import random
 import math
+from PIL import Image, ImageDraw
 
 class NeuralNetwork:
-    
+
+    def generatePicture(self):
+        size = pow(2, 11)
+        nbrNeuronsMax = max(self.nbrNeuronsPerHiddenLayer, self.nbrOutputs, self.nbrInputs)
+        im = Image.new('RGB',(size, size), (255,255,255))
+        pix = im.load()
+        #~ for i in xrange(size):
+            #~ for j in xrange(size):
+                #~ R = int(1.0*i/size*256)
+                #~ V = int(0.5*int(1.0*i/size*256)+int(random() * 128))
+                #~ B = int(0.5*int(1.0*j/size*256)+int(random() * 128))
+                
+                #~ pix[i,j] = (R, V, B) 
+        
+        draw = ImageDraw.Draw(im)
+        
+        x = 0
+        for layout in self.NN:
+            y = 0
+            for neuron in layout:
+                espace = nbrNeuronsMax * 1.0 / len(layout)
+                draw.ellipse((20 + x, 20 + y, 80 + x, 80 + y), fill = 'white', outline ='red')
+                y = y + 100 * espace
+            x = x + 150
+                
+                
+        im.save('ima4.png')
+
     def mutate(self, nbrMutates):
         for x in xrange(0, nbrMutates):
             newWeight       = random() * 2 - 1
-            layout          = random() * (len(self.NN) - 1) + 1
-            neuronToMutate  = len(self.NN[layout])
-            weightToMutate  = len(self.NN[layout][neuron].weight)
+            layout          = int(random() * (len(self.NN) - 1) + 1)
+            neuronToMutate  = int(random() * len(self.NN[layout]))
+            weightToMutate  = int(random() * len(self.NN[layout][neuronToMutate].weight))
+
+            print "Nombre de couches :", len(self.NN), ", on choisi celle la : ", layout, ".\nCe layout a ", len(self.NN[layout]), " neurones."
+            print "On choisi ce neurone : ", neuronToMutate, ", ce neurone a ", len(self.NN[layout][neuronToMutate].weight), " de neurones fils."
+            print "On mute celui la : ", weightToMutate
             
             self.NN[layout][neuronToMutate].weight[weightToMutate] = newWeight
-            
 
     def calculateOutputs(self):
         NN = iter(self.NN)
@@ -25,8 +56,7 @@ class NeuralNetwork:
                 neuron.activateFunction()
                 
             lastLayout = layout
-                
-        
+
     def setInputs(self, inputs):
         for numInput in xrange(0, self.nbrInputs):
             self.NN[0][numInput].state = inputs[numInput]
