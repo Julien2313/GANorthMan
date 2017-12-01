@@ -4,32 +4,35 @@ from PIL import Image, ImageDraw
 
 class NeuralNetwork:
 
-    def generatePicture(self):
-        size = pow(2, 11)
+    def drawNN(self):
+
+        gapX = 250
+        gapY = 200
+
         nbrNeuronsMax = max(self.nbrNeuronsPerHiddenLayer, self.nbrOutputs, self.nbrInputs)
-        im = Image.new('RGB',(size, size), (255,255,255))
+        sizeX = len(self.NN)  * gapX + 100
+        sizeY = nbrNeuronsMax * gapY + 100
+        im = Image.new('RGB',(sizeX, sizeY), (255,255,255))
         pix = im.load()
-        #~ for i in xrange(size):
-            #~ for j in xrange(size):
-                #~ R = int(1.0*i/size*256)
-                #~ V = int(0.5*int(1.0*i/size*256)+int(random() * 128))
-                #~ B = int(0.5*int(1.0*j/size*256)+int(random() * 128))
-                
-                #~ pix[i,j] = (R, V, B) 
-        
         draw = ImageDraw.Draw(im)
         
-        x = 0
+        x = 20
         for layout in self.NN:
-            y = 0
+            y = 20
             for neuron in layout:
                 espace = nbrNeuronsMax * 1.0 / len(layout)
-                draw.ellipse((20 + x, 20 + y, 80 + x, 80 + y), fill = 'white', outline ='red')
-                y = y + 100 * espace
-            x = x + 150
+                y = y + espace / 2.0
+                if neuron.state:
+                    draw.ellipse((x, y, 80 + x, 80 + y), fill = 'blue', outline ='blue')
+                else:
+                    draw.ellipse((x, y, 80 + x, 80 + y), fill = 'white', outline ='blue')
+                #for weights in neuron.weight:
+
+                y = y + gapY * espace
+            x = x + gapX
+
                 
-                
-        im.save('ima4.png')
+        im.save('NN.png')
 
     def mutate(self, nbrMutates):
         for x in xrange(0, nbrMutates):
@@ -51,7 +54,7 @@ class NeuralNetwork:
             for neuron in layout:
                 neuron.allWeight = 0
                 for x in xrange(0, len(lastLayout)):
-                    if lastLayout[x].state == 1:
+                    if lastLayout[x].state:
                         neuron.allWeight = neuron.allWeight + neuron.weight[x]
                 neuron.activateFunction()
                 
@@ -98,8 +101,8 @@ class NeuralNetwork:
 
 
     def __init__(self):
-        self.nbrHidenLayers              =   2 #without input/ouput
-        self.nbrInputs                   =   3
+        self.nbrHidenLayers              =   5 #without input/ouput
+        self.nbrInputs                   =   5
         self.nbrOutputs                  =   4
         self.nbrNeuronsPerHiddenLayer    =   self.nbrInputs * 2
         
@@ -113,12 +116,12 @@ class Neuron:
         self.score = 1.0/(1+math.exp(-self.allWeight))
         
         if self.score > 0.5:
-            self.state = 1
+            self.state = True
         else:
-            self.State = 0
+            self.State = False
 
     def __init__(self):
-        self.state  =   0 #state is 1 or 0, activate or not
+        self.state  =   False #state is 1 or 0, activate or not
         self.weight =  [] #weight of last the neurons, between 0 and maxWeight
         self.allWeight =  0
         self.score  =   0 #the score of the activate function

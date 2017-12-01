@@ -1,10 +1,10 @@
-import sys, random
+import sys
 import pygame
 from pygame.locals import *
 import pymunk 
 import pymunk.pygame_util
-from pymunk import Vec2d
-from sqlalchemy.sql.expression import false
+
+from GA.GeneticAlgorithm import GeneticAlgorithm
 from graphics import graphics
 
 def main():
@@ -12,7 +12,7 @@ def main():
     x_resolution = 1200
     y_resolution = 700
     screen = pygame.display.set_mode((x_resolution, y_resolution))
-    pygame.display.set_caption("Test géométrie personnage")
+    pygame.display.set_caption("Test geometrie personnage")
     clock = pygame.time.Clock()
     size = 1.5
     friction = 0.2
@@ -35,22 +35,22 @@ def main():
               
             #test angle case  
             elif event.type == KEYDOWN and event.key == K_UP:
-                print("Déplacement jambe droite")
+                print("Deplacement jambe droite")
                 original_stick.right_leg.body.angle += 1.57
                 space.reindex_shape(original_stick.right_leg.right_leg_shape)
 
             elif event.type == KEYDOWN and event.key == K_DOWN:
-                print("Déplacement jambe gauche")
+                print("Deplacement jambe gauche")
                 original_stick.left_leg.body.angle += 1.57
                 space.reindex_shape(original_stick.left_leg.left_leg_shape)
                 
             elif event.type == KEYDOWN and event.key == K_LEFT:
-                print("Déplacement bras gauche")
+                print("Deplacement bras gauche")
                 original_stick.left_arm.body.angle += 1.57
                 space.reindex_shape(original_stick.left_arm.left_arm_shape)
                 
             elif event.type == KEYDOWN and event.key == K_RIGHT:
-                print("Déplacement bras droit")
+                print("Deplacement bras droit")
                 original_stick.right_arm.body.angle += 1.57
                 space.reindex_shape(original_stick.right_arm.right_arm_shape)
                 
@@ -70,4 +70,14 @@ def main():
         clock.tick(100)
 
 if __name__ == '__main__':
-    main()
+    GA = GeneticAlgorithm()
+
+    GA.initializePop()
+    GA.pop[0].setInputs([True] * GA.pop[0].nbrInputs)
+    GA.pop[0].calculateOutputs()
+    GA.pop[0].printNN()
+    GA.pop[0].mutate(1)
+    GA.pop[0].printNN()
+    GA.pop[0].drawNN()
+
+    #main()

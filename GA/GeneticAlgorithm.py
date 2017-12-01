@@ -41,13 +41,3 @@ class GeneticAlgorithm:
         self.pop                =   []
     
         #set GA parameters
-        
-GA = GeneticAlgorithm()
-
-GA.initializePop()
-GA.pop[0].setInputs([1,1,1])
-GA.pop[0].calculateOutputs()
-GA.pop[0].printNN()
-GA.pop[0].mutate(1)
-GA.pop[0].printNN()
-GA.pop[0].generatePicture()

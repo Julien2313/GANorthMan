@@ -4,7 +4,6 @@ from pygame.locals import *
 from pymunk import Vec2d
 import pymunk 
 import pymunk.pygame_util
-from sqlalchemy.sql.expression import false
 from array import array
 from math import pow
 from math import sqrt
